@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        li {
+            list-style: none;
+        }
+
+        li:hover {
+            list-style: none;
+            background-color: rgb(202, 197, 197);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    邮箱：<input type="text" id="email" />
+</body>
+<script>
+    $(document).ready(function () {
+        let email = $("#email")
+        let config = {
+            value: '',
+            maxHeight: '200px',
+            isOverFlow: true,
+            emailType: ["qq.com", "163.com", "163.net", "gmail.com", "yahoo.com", "aliyun.com", "139.com", "189.com", "126.com", "sohu.com", "sina.com", "sina.cn"]
+        }
+        $("#email").bind("input propertychange", function () {
+
+            // NOTE 
+            // let emailVal = email.val()
+            // config.value = emailVal
+            config.value = email.val()
+            
+            autocomplete(config, email)
+        })
+    })
+
+    function autocomplete(config, email) {
+        let location = {
+            top: email[0].offsetTop,
+            left: email[0].offsetLeft,
+            height: email[0].offsetHeight,
+            width: email[0].offsetWidth
+        }
+        let emailVal = config.value
+        if (emailVal && emailVal.length > 0) {
+            // 初始化显示内容
+            $('#emailTypeList').remove()
+            let html = ''
+            let showFlag = true
+            // 根据配置判断是否固定弹框显示高度并内容滚动
+            // NOTE 
+            if (config.isOverFlow && config.isOverFlow === true) {
+                html = "<ul id='emailTypeList' style='border:1px solid; padding-left:5px; position:absolute; overflow:auto; max-height:" + config.maxHeight + ";top:" + (location.top + location.height) + "px; left:" + location.left + "px; width:" + location.width + "px;'>"
+            } else {
+                html = "<ul id='emailTypeList' style='border:1px solid; padding-left:5px; position:absolute; top:" + (location.top + location.height) + "px; left:" + location.left + "px; width:" + location.width + "px;'>"
+            }
+            // 判断是否输入'@'符号
+            if (emailVal.includes('@')) {
+                let temp = emailVal.split('@')
+                if (temp[1] === '') {
+                    for (let i = 0; i < config.emailType.length; i++) {
+                        html += "<li>" + emailVal + config.emailType[i] + "</li>"
+                    }
+                } else {
+                    // 筛选与输入匹配的邮件后缀名
+                    let tempList = config.emailType.filter(item => {
+                        return item.substring(0, temp[1].length) === temp[1]
+                    })
+                    if (tempList.length > 0) {
+                        for (let i = 0; i < tempList.length; i++) {
+                            html += "<li>" + temp[0] + '@' + tempList[i] + "</li>"
+                        }
+                    } else {
+                        // 不存在匹配的邮件后缀时不显示常用邮件弹框
+                        showFlag = false
+                    }
+                }
+            } else {
+                for (let i = 0; i < config.emailType.length; i++) {
+                    html += "<li>" + emailVal + '@' + config.emailType[i] + "</li>"
+                }
+            }
+            html += "</ul>"
+            if (showFlag) {
+                email.after(html)
+            }
+        } else {
+            $('#emailTypeList').remove()
+        }
+
+        // 点击选择邮件
+        $('#emailTypeList').on('click', 'li', function () {
+            email.val($(this).text())
+            $('#emailTypeList').remove()
+        })
+    }
+</script>
+
+</html>

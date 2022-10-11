@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>敏感词过滤demo</title>
+    <script>
+        window.onload = function () {
+            const reg = /sb|awsl|死/gi
+
+            let text = document.getElementById('text')
+            let submit = document.getElementById('submit')
+            let res = document.getElementById('res')
+
+            submit.onclick = function () {
+                res.innerHTML = text.value.replace(reg, '*')
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h2>敏感词过滤</h2>
+
+    <p>
+        <textarea name="text" id="text" cols="30" rows="10"></textarea>
+    </p>
+
+    <p>
+        <button id="submit">发布</button>
+    </p>
+
+    <p id="res"></p>
+</body>
+
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .cards {
+            position: relative;
+            width: 60vw;
+            display: grid;
+            /* 行列的间隙 */
+            grid-gap: 0em;
+            /* 列的开始和结束位置   是 grid-column-start 和 grid-column-end 属性的简写属性 */
+            grid-column: 1/-1;
+            /* 列数及宽度 */
+            grid-template-columns: repeat(auto-fit, minmax(10px, 1fr));
+            padding: 2rem;
+            /* 观察者与 z=0 平面的距离，使具有三维位置变换的元素产生透视效果 */
+            perspective: 1000px;
+        }
+
+        .card {
+            width: 90px;
+            height: 100px;
+            /* 水平对齐 */
+            text-align: center;
+            background-color: aliceblue;
+            border-radius: 20px;
+            /* box-shadow: X轴偏移 Y轴偏移 阴影面积 阴影颜色 */
+            box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+            /* X轴偏移10度 */
+            transform: rotateX(10deg);
+            /* 偏移中心点为顶部中心 */
+            transform-origin: top center;
+            /* 过渡延时 */
+            transition: transform 200ms ease 0ms;
+        }
+
+        .card::before,
+        .card::after {
+            /* 使用::before ::after伪元素必须设置content属性 */
+            content: "";
+            height: 5px;
+            width: 5px;
+            background: #5c0dac;
+            position: absolute;
+            top: 10px;
+            display: block;
+            border: 1px solid #000;
+            border-radius: 50%;
+            box-shadow: 0 0 3px rgb(0 0 0 / 10%);
+        }
+
+        .card::before {
+            right: 15px;
+        }
+
+        .card::after {
+            left: 15px;
+        }
+
+        .card:hover {
+            transform: rotateX(22deg);
+        }
+
+        img {
+            width: 50px;
+            height: 40px;
+            margin: 27px 10px 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cards">
+        <div class="card">
+            <img src="./logo-vue.png">
+            <b>VUE</b>
+        </div>
+        <div class="card">
+            <img src="./logo-vue.png">
+            <b>VUE</b>
+        </div>
+        <div class="card">
+            <img src="./logo-vue.png">
+            <b>VUE</b>
+        </div>
+        <div class="card">
+            <img src="./logo-vue.png">
+            <b>VUE</b>
+        </div>
+        <div class="card">
+            <img src="./logo-vue.png">
+            <b>VUE</b>
+        </div>
+        <div class="card">
+            <img src="./logo-vue.png">
+            <b>VUE</b>
+        </div>
+    </div>
+
+    <style>
+        .boxes {
+            margin: 30px;
+        }
+
+        .box {
+            position: absolute;
+            width: 90px;
+            height: 100px;
+            /* 水平对齐 */
+            text-align: center;
+            background-color: aliceblue;
+            border-radius: 20px;
+            /* box-shadow: X轴偏移 Y轴偏移 阴影面积 阴影颜色 */
+            box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+            /* 偏移中心点为顶部中心 */
+            transform-origin: top center;
+            /* 过渡延时 */
+            /* transition: transform 200ms ease 0ms; */
+        }
+
+        .box::before,
+        .box::after {
+            /* 使用::before ::after伪元素必须设置content属性 */
+            content: "";
+            height: 5px;
+            width: 5px;
+            background: #5c0dac;
+            position: absolute;
+            top: 10px;
+            display: block;
+            border: 1px solid #000;
+            border-radius: 50%;
+            box-shadow: 0 0 3px rgb(0 0 0 / 10%);
+        }
+
+        .box::before {
+            right: 15px;
+        }
+
+        .box::after {
+            left: 15px;
+        }
+
+        @keyframes identifier {
+            from {
+                transform: rotateX(0deg);
+            }
+
+            to {
+                transform: rotateX(270deg);
+            }
+        }
+
+        .box:active {
+            animation-name: identifier;
+            animation-duration: 1s;
+        }
+    </style>
+    <div class="boxes">
+        <div class="box">
+            <img src="./logo-vue.png">
+            <b>66</b>
+        </div>
+        <div class="box">
+            <img src="./logo-vue.png">
+            <b>55</b>
+        </div>
+        <div class="box">
+            <img src="./logo-vue.png">
+            <b>44</b>
+        </div>
+        <div class="box">
+            <img src="./logo-vue.png">
+            <b>33</b>
+        </div>
+        <div class="box">
+            <img src="./logo-vue.png">
+            <b>22</b>
+        </div>
+        <div class="box">
+            <img src="./logo-vue.png">
+            <b>11</b>
+        </div>
+    </div>
+
+
+
+    <!--  -->
+    <style>
+        .main {
+            width: 100%;
+            height: 229px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        span {
+            display: inline-block;
+            width: 21ch;
+            /*等宽字体 monospace*/
+            font: bold 200% Consolas, Monaco, monospace;
+            overflow: hidden;
+            white-space: nowrap;
+            font-weight: 500;
+            border-right: 1px solid transparent;
+            animation: typing 10s steps(21), caret .5s steps(1) infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+        }
+
+        @keyframes caret {
+            50% {
+                /* currentColor 继承父元素属性 */
+                border-right-color: currentColor
+            }
+        }
+    </style>
+    <div class="main">
+        <span>You-need-to-know-css!</span>
+    </div>
+</body>
+
+</html>

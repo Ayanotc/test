@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #eff4ff;
+        }
+
+        :root {
+            --SCALE: 60;
+            --BG_COLOR: blue;
+        }
+
+        .bk {
+            width: 100%;
+            height: 100vh;
+            /* 色相变化 */
+            /* filter: hue-rotate(90deg); */
+            overflow: hidden;
+        }
+
+        .btn {
+            width: 100px;
+            height: 100px;
+            background-color: #007acc;
+            border-radius: 50%;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .bg,
+        .bg2 {
+            /* width: 0px; */
+            /* height: 0px; */
+            border-radius: 50%;
+            position: fixed;
+            /* bottom: 65px; */
+            /* right: 65px; */
+            width: 100px;
+            height: 100px;
+            bottom: 20px;
+            right: 20px;
+            transform-origin: 50% 50%;
+            /*  */
+            backdrop-filter: invert(1);
+        }
+
+        .bg-back {
+            width: 10vw;
+            height: 10vw;
+            position: fixed;
+
+            border-radius: 50%;
+            transform-origin: 50% 50%;
+            transform: scale(3);
+            backdrop-filter: invert(1);
+
+
+        }
+
+        .bg-animation {
+            /* Edge 浏览器会有内容抖动问题 */
+            animation: bg-animation 2s cubic-bezier(0.59, 0.2, 0, 1.1) forwards;
+        }
+
+        @keyframes bg-animation {
+            0% {
+                width: 100px;
+                height: 100px;
+                transform: scale(1);
+            }
+
+            100% {
+                width: 100vw;
+                height: 100vw;
+                transform: scale(3);
+            }
+        }
+
+        @keyframes bg-animation-back {
+            0% {
+                width: 100vw;
+                height: 100vw;
+                transform: scale(3);
+            }
+
+            100% {
+                width: 100px;
+                height: 100px;
+                transform: scale(1);
+            }
+        }
+
+
+        /*  */
+        body {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #grid {
+            width: 60%;
+            height: 30vw;
+            min-width: 22rem;
+            min-height: 11rem;
+            background-color: aliceblue;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-areas:
+                'a a b'
+                'a a d'
+                'c e d';
+            /* grid-template-areas:
+                'a . b'
+                'a . d'
+                'c e d'; */
+            grid-gap: .3rem;
+        }
+
+        .item {
+            padding: 1rem;
+            width: 100%;
+            height: 100%;
+            color: #fefdfd;
+        }
+
+        .item-1 {
+            background-color: #b03531;
+            grid-area: a;
+        }
+
+        .item-2 {
+            background-color: #33a8a5;
+            grid-area: b;
+        }
+
+        .item-3 {
+            background-color: #30997b;
+            grid-area: c;
+        }
+
+        .item-4 {
+            background-color: #6a478f;
+            grid-area: d;
+        }
+
+        .item-5 {
+            background-color: #da6f2b;
+            grid-area: e;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bk">
+        <div id='grid'>
+            <div class='item item-1'>1</div>
+            <div class='item item-2'>2</div>
+            <div class='item item-3'>3</div>
+            <div class='item item-4'>4</div>
+            <div class='item item-5'>5</div>
+        </div>
+        <div class="btn" onclick="BG()">
+            <div class="bg-back"></div>
+            <div class="bg2-back"></div>
+        </div>
+    </div>
+
+    <script>
+        function BG() {
+            let bbg = document.getElementsByClassName("bg")[0]
+            console.log(bbg.className)
+
+            bbg.className = (bbg.className == "bg bg-animation") ? "bg bg-animation-back" : "bg bg-animation"
+
+            setTimeout(() => {
+                let bbg2 = document.getElementsByClassName("bg2")[0]
+                console.log(bbg2.className)
+
+                // bbg2.className = (bbg2.className == "bg2 bg-animation") ? "bg2 bg-animation-back" : "bg2 bg-animation"
+            }, 200)
+            // 
+        }
+    </script>
+</body>
+
+</html>

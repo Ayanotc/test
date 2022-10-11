@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRINT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --FONT_COLOR: #686550;
+            --FONT_SIZE: 16px;
+            --FONT_WEIGHT: 200;
+            --BACKGROUND_COLOR: #efe9b7;
+            --PADDING_20: 20px;
+            --COLOR_THEME: light;
+
+            /* 系统主题（自带），滚动条变为暗色 */
+            /* color-scheme: light | dark; */
+
+            /* title */
+            --WORD_NUM: 4;
+            --TEXT_LENGTH: 8ch;
+            --ANIMATION_TIME: 2s;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+
+            background-color: var(--BACKGROUND_COLOR);
+            font-weight: var(--FONT_WEIGHT);
+            font-size: var(--FONT_SIZE);
+            color: var(--FONT_COLOR);
+        }
+
+        .THEME_LIGHT {
+            --FONT_COLOR: #686550;
+            --BACKGROUND_COLOR: #efe9b7;
+            --COLOR_THEME: light;
+        }
+
+        .THEME_DARK {
+            --FONT_COLOR: #d8dee9;
+            --BACKGROUND_COLOR: #303841;
+            --COLOR_THEME: dark;
+        }
+
+        .theme {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 1rem;
+            padding: var(--PADDING_20);
+            float: right;
+            cursor: default;
+            user-select: none;
+        }
+
+        .light {
+            border-bottom: 1px solid var(--FONT_COLOR);
+        }
+
+        .dark {
+            border-bottom: 1px solid var(--FONT_COLOR);
+        }
+
+        #poem {
+            position: absolute;
+            left: calc(50vw - 10ch);
+            top: 20vh;
+        }
+
+        .title {
+            width: var(--TEXT_LENGTH);
+            white-space: nowrap;
+            overflow: hidden;
+            font-family: KaiTi;
+            user-select: none;
+            line-height: 26px;
+            border-right: 1px solid transparent;
+            /* 最后的 calc(var(--WORD_NUM) + 1) 循环几次 */
+            animation: typing var(--ANIMATION_TIME) steps(var(--WORD_NUM)), caret .25s steps(1) calc(var(--WORD_NUM) + 1);
+
+            /* position: absolute; */
+            /* left: 44vw; */
+            /* top: 4vh; */
+        }
+
+        #poem span {
+            position: relative;
+            display: inline-block;
+        }
+
+        #poem .move {
+            /*  
+            * none：播放完之后不改变默认行为，默认值
+            * backwards：回调到动画最开始出现的画面
+            * forwards：停在动画最后的的那个画面
+            * both：应用为动画结束或开始的状态
+            */
+            animation: up 2s linear forwards;
+        }
+
+        /* 文字特效 */
+        @keyframes up {
+            100% {
+                opacity: 0;
+                transform: translate(600px, -500px) rotate(360deg);
+            }
+        }
+
+        /* 打字机 */
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+        }
+
+        /* 打字机 */
+        @keyframes caret {
+            50% {
+                border-right-color: currentColor
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="theme">
+        <div class="light" onclick="changeTheme('THEME_LIGHT')">light</div>
+        <div class="dark" onclick="changeTheme('THEME_DARK')">dark</div>
+    </div>
+
+    <div id="poem">
+        <div class="title"></div>
+    </div>
+
+    <script>
+        function flyWords(txt) {
+            // var txt = document.querySelector(".title");
+            // 为.title的每个文字加一个span标签
+            txt.innerHTML = txt.textContent.replace(/\S/g, "<span>$&</span>");
+
+            // 获取每个文字span
+            var arr = document.querySelectorAll("span");
+            arr.forEach(function (temp) {
+                // 监听鼠标移动
+                temp.addEventListener('mouseover', () => {
+                    // 添加move属性
+                    temp.classList.add('move');
+                })
+            })
+        }
+
+        function changeTheme(theme) {
+            let body = document.body
+            body.className = theme
+        }
+
+        let poem = `登白马潭&nbsp&nbsp&nbsp&nbsp作者：杜甫。
+                    水生春缆没，日出野船开。
+                    宿鸟行犹去，丛花笑不来。
+                    人人伤白首，处处接金杯。
+                    莫道新知要，南征且未回。`
+        let list = poem.split(/[\。]/)
+        let i = 0
+
+        function print(item, i) {
+
+            let txt = document.getElementsByClassName("title")
+            txt[i].innerHTML = item
+            flyWords(txt[i])
+
+            let num = item.length > 12 ? 11 : item.length
+            let len = num * 2
+            let speed = num / 4
+
+            document.documentElement.style.setProperty('--WORD_NUM', num)
+            document.documentElement.style.setProperty('--TEXT_LENGTH', len + 'ch')
+            document.documentElement.style.setProperty('--ANIMATION_TIME', speed + 's')
+
+            // 等待当前动画结束
+            setTimeout(() => {
+                let el = document.querySelectorAll("div")
+                console.log(el[i])
+                let br = document.createElement("br");
+                let createDom = document.createElement('div')
+                createDom.classList.add('title')
+
+                var element = document.getElementById("poem");
+                element.appendChild(br);
+                element.appendChild(createDom);
+
+                i++
+                if (i <= (list.length - 2)) {
+                    print(list[i], i)
+                } else {
+                    return -1
+                }
+
+            }, (speed + 1) * 1000)
+        }
+
+        print(list[i], i)
+        
+
+    </script>
+</body>
+
+</html>
